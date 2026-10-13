@@ -1,0 +1,5 @@
+[project]
+name = "neon-pilot"
+version = "1.0.0"
+description = "Gra sterowana dłonią — sceniczne demo AI i DevOps"
+requires-python = ">=3.10"
