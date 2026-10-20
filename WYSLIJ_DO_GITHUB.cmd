@@ -3,7 +3,7 @@ setlocal
 cd /d "%~dp0"
 
 echo ================================================
-echo Publikowanie folderu neon-pilot na GitHubie
+echo Publikowanie folderu neon-pilot do neon-pilot-2 na GitHubie
 echo ================================================
 echo.
 
@@ -25,20 +25,19 @@ if not exist ".git" (
 git branch -M main
 if errorlevel 1 goto :error
 
-set "REPO_URL=https://github.com/marcingastol/neon-pilot.git"
+set "REPO_URL=https://github.com/marcingastol/neon-pilot-2.git"
 set "CURRENT_ORIGIN="
 for /f "delims=" %%U in ('git remote get-url origin 2^>nul') do set "CURRENT_ORIGIN=%%U"
 if not defined CURRENT_ORIGIN (
     git remote add origin "%REPO_URL%"
     if errorlevel 1 goto :error
 ) else if /I not "%CURRENT_ORIGIN%"=="%REPO_URL%" (
-    echo BLAD: Skonfigurowany adres origin jest inny:
+    echo Zmieniam adres zdalnego repozytorium origin:
     echo   %CURRENT_ORIGIN%
-    echo Oczekiwany adres:
+    echo na:
     echo   %REPO_URL%
-    echo Skrypt niczego nie wyslal. Sprawdz konfiguracje repozytorium.
-    pause
-    exit /b 1
+    git remote set-url origin "%REPO_URL%"
+    if errorlevel 1 goto :error
 )
 
 echo.
@@ -50,6 +49,7 @@ echo.
 echo Pliki przygotowane do wyslania:
 git status --short
 echo.
+echo Repozytorium docelowe: %REPO_URL%
 echo Folder data jest ignorowany przez .gitignore.
 echo Sprawdz powyzsza liste przed kontynuowaniem.
 choice /C TN /N /M "Wyslac te zmiany na GitHub? T=tak, N=anuluj: "
@@ -82,7 +82,7 @@ if errorlevel 1 (
 )
 
 echo.
-echo Gotowe! Repozytorium: https://github.com/marcingastol/neon-pilot
+echo Gotowe! Repozytorium: https://github.com/marcingastol/neon-pilot-2
 pause
 exit /b 0
 
